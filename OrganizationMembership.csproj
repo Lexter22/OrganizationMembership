@@ -1,0 +1,28 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="MembershipCommon\**" />
+    <Compile Remove="MembershipDataServices\**" />
+    <Compile Remove="Membership_BusinessDataLogic\**" />
+    <EmbeddedResource Remove="MembershipCommon\**" />
+    <EmbeddedResource Remove="MembershipDataServices\**" />
+    <EmbeddedResource Remove="Membership_BusinessDataLogic\**" />
+    <None Remove="MembershipCommon\**" />
+    <None Remove="MembershipDataServices\**" />
+    <None Remove="Membership_BusinessDataLogic\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="MembershipCommon\MembershipCommon.csproj" />
+    <ProjectReference Include="MembershipDataServices\MembershipDataServices.csproj" />
+    <ProjectReference Include="Membership_BusinessDataLogic\Membership_BusinessDataLogic.csproj" />
+  </ItemGroup>
+
+</Project>
