@@ -1,5 +1,6 @@
 ﻿using MembershipCommon;
 using MembershipDataServices;
+using System.ComponentModel.DataAnnotations;
 
 namespace Membership_BusinessDataLogic
 {
@@ -16,13 +17,14 @@ namespace Membership_BusinessDataLogic
         {
             return MembershipDataLayer.SearchMember(id);
         }
-        public static string UpdateMember()
+        public static bool UpdateMember(int id,string UpdateFName,string UpdateLName)
         {
-            return MembershipDataLayer.UpdateMember();
+            return MembershipDataLayer.UpdateMember(id, UpdateFName, UpdateLName);
         }
         public static List<Members> ShowAllMember()
         {
-            return MembershipDataLayer.members;
+          return MembershipDataLayer.members;
+
         }
         public static bool RemoveMember(int id)
         {

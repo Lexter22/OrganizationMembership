@@ -1,6 +1,8 @@
 ﻿using MembershipDataServices;
 using MembershipCommon;
 using Membership_BusinessDataLogic;
+using System.Threading.Channels;
+using System.Diagnostics;
 namespace OrganizationMembership
 {
     internal class Program
@@ -20,23 +22,27 @@ namespace OrganizationMembership
                     case (int)Actions.AddMember:
                         Formatter();
                         AddMembers();
-                        Console.WriteLine("Member Added");
+                        Formatter();
                         break;
                     case (int)Actions.SearchMember:
                         Formatter();
-
+                        SearchMembers();
+                        Formatter();
                         break;
                     case (int)Actions.UpdateMember:
                         Formatter();
-                        Console.WriteLine("Update Member");
+                        UpdateMember();
+                        Formatter();
                         break;
                     case (int)Actions.ShowAllMember:
                         Formatter();
-                        ShowAllMembers();
+                        DisplayMembers();
+                        Formatter();
                         break;
                     case (int)Actions.RemoveMember:
                         Formatter();
-                        Console.WriteLine("Remove a Member");
+                        RemoveMember();
+                        Formatter();
                         break;
                     case (int)Actions.Exit:
                         Console.WriteLine("Exit");
@@ -64,25 +70,102 @@ namespace OrganizationMembership
         {
             Console.WriteLine("---------------------------------");
         }
-            public static void AddMembers()
+        static void AddMembers()
+        {
+           Console.Write("First name: ");
+           string firstName = Console.ReadLine();
+           Console.Write("Last name: ");
+           string lastName = Console.ReadLine();
+
+           Members member = new Members { FName = firstName, LName = lastName };
+           MembershipBusiness.AddMember(member);
+           Console.WriteLine("Member Added");
+
+        }
+        static void SearchMembers()
+        {
+            AskID();
+            int id = GetUserInput();
+
+            if (MembershipBusiness.SearchMember(id) != null)
             {
+                Console.WriteLine("User found");
+                Console.WriteLine(MembershipBusiness.SearchMember(id));
+            }
+            else
+            {
+                Console.WriteLine("Member not found");
+            }
+        }
+        static void UpdateMember()
+        {
+            AskID();
+            int id = GetUserInput();
+
+            if (MembershipBusiness.SearchMember(id) != null)
+            {
+                Console.WriteLine(MembershipBusiness.SearchMember(id));
+
                 Console.Write("First name: ");
                 string firstName = Console.ReadLine();
                 Console.Write("Last name: ");
                 string lastName = Console.ReadLine();
 
-                Members member = new Members { FName = firstName, LName = lastName };
-                MembershipBusiness.AddMember(member);
-            }
-            public static void ShowAllMembers()
-            {
-                List<Members> members = MembershipBusiness.ShowAllMember();
-                Console.WriteLine("Name                         Member ID");
-                foreach (Members member in members)
+                bool isUpdated = MembershipBusiness.UpdateMember(id, firstName, lastName);
+                if(isUpdated)
                 {
-                    Console.WriteLine($"{member.FName} {member.LName}          {member.MemberID}\n");
+                    Console.WriteLine("Member updated!");
+                }
+                else
+                {
+                    Console.WriteLine("Update unsuccessful");
                 }
             }
+            else
+            {
+                Console.WriteLine("Member not found");
+            }
         }
+        static void RemoveMember()
+        {
+            AskID();
+            int id = GetUserInput();
+            if (MembershipBusiness.SearchMember(id) != null)
+            {
+                Console.WriteLine(MembershipBusiness.SearchMember(id));
+                MembershipBusiness.RemoveMember(id);
+                Console.WriteLine("Member removed");
+            }
+            else
+            {
+                Console.WriteLine("Member not found");
+            }
+
+        }
+        static void DisplayMembers()
+        {
+           List<Members> members = MembershipBusiness.ShowAllMember();
+            if (members.Count > 0)
+            {
+                Console.WriteLine("Name\t\t\tID");
+                Formatter();
+                foreach (Members member in members)
+                {
+                    Console.WriteLine($"{member.FName} {member.LName}\t\t{member.GetMemberID()}");
+                }
+            }
+            else
+            {
+                Console.WriteLine("No members found.");
+            }
+        }
+        static void AskID()
+        {
+            Console.Write("Enter ID:");
+           
+        }
+        
     }
 }
+    
+
