@@ -6,56 +6,32 @@ namespace MembershipDataServices
 {
     public class MembershipDataLayer
     {
-        public static List<Members> members = new List<Members>();
-        private static int memberID = 1;
-      
-        public static void AddMember(Members member)
+        IOrgMembership MembershipDataLayerInt;
+        public MembershipDataLayer()
         {
-            member.SetMemberID(memberID++);
-            members.Add(member);
+            // MembershipDataLayerInt = new TextFileDataService();
+            //   MembershipDataLayerInt = new InMemoryDataService();
+            MembershipDataLayerInt = new JsonFileDataService();
         }
-        public static string SearchMember(int id)
+
+        public void AddMember(Members member)
         {
-            foreach(Members member in members)
-            {
-                if (member.GetMemberID() == id)
-                {
-                    return $"Name: {member.FName} {member.LName}";
-                }
-               
-            }
-            return MemberNotFound();
+            MembershipDataLayerInt.AddMember(member);
         }
-        public static bool UpdateMember(int id,string UpdateFNamne,string UpdateLName)
+
+        public List<Members> GetMembers()
         {
-            foreach (Members member in members)
-            {
-                member.FName = UpdateFNamne;
-                member.LName = UpdateLName;
-                return true;
-            }
-            return false;
+            return MembershipDataLayerInt.GetMembers();
         }
-        public static bool RemoveMember(int id)
+
+        public void RemoveMember(Members member)
         {
-            for(int i = 0; i < members.Count; i++)
-            {
-                if (members[i].GetMemberID() == id)
-                {
-                    members.RemoveAt(i);
-                    return true;
-                }
-                else
-                {
-                    MemberNotFound();
-                }
-            }
-            return false;
+            MembershipDataLayerInt.RemoveMember(member);
         }
-        static string MemberNotFound()
+
+        public void UpdateMember(Members member)
         {
-            return "Member not found";
+            MembershipDataLayerInt.UpdateMember(member);
         }
-       
     }
 }

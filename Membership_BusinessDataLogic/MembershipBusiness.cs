@@ -8,27 +8,57 @@ namespace Membership_BusinessDataLogic
     {
         static MembershipDataLayer dataLayer = new MembershipDataLayer();
       
-        public static void AddMember(Members member)
+        public static void AddMember(string firstname,string lastname,string id)
         {
-            MembershipDataLayer.AddMember(member);
+            Members member = new Members { FName = firstname, LName = lastname, ID = id };
+            dataLayer.AddMember(member);
         }
+        public string SearchMember(string id)
+        {
+            //return MembershipDataLayer.SearchMember(id);
+            foreach (Members member in dataLayer.GetMembers())
+            {
+                if (member.ID.Equals(id))
+                {
+                    return $"Name: {member.FName} {member.LName}";
+                   
+                }
+            }
+            return "Member not found";
+        }
+        public static string UpdateMember(string id, string UpdateFName, string UpdateLName)
+        {
+            //return MembershipDataLayer.UpdateMember(id, UpdateFName, UpdateLName);
+            foreach (Members member in dataLayer.GetMembers())
+            {
+                if (member.ID.Equals(id))
+                {
+                   member.FName = UpdateFName;
+                   member.LName = UpdateLName;
+                   dataLayer.UpdateMember(member);
+                   return $"Member updated: {member.FName} {member.LName}";
+                }
+            }
+            return "Member not found!";
+        }
+        public static List<Members> ShowAllMembers()
+        {
+            return dataLayer.GetMembers();
 
-        public static string SearchMember(int id)
-        {
-            return MembershipDataLayer.SearchMember(id);
         }
-        public static bool UpdateMember(int id,string UpdateFName,string UpdateLName)
+        public static bool RemoveMember(string id)
         {
-            return MembershipDataLayer.UpdateMember(id, UpdateFName, UpdateLName);
-        }
-        public static List<Members> ShowAllMember()
-        {
-          return MembershipDataLayer.members;
-
-        }
-        public static bool RemoveMember(int id)
-        {
-            return MembershipDataLayer.RemoveMember(id);
+            //return MembershipDataLayer.RemoveMember(id);
+            foreach(Members member in dataLayer.GetMembers())
+            {
+                if (member.ID == id)
+                {
+                    dataLayer.RemoveMember(member);
+                    return true;
+                }
+         
+            }
+            return false;
         }
     }
 }

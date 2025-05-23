@@ -16,33 +16,23 @@ namespace OrganizationMembership
             {
                 Console.WriteLine("Organization Membership");
                 DisplayUserActions();
-                int option = GetUserInput();
+                int option = Convert.ToInt16(GetUserInput());
                 switch (option)
                 {
                     case (int)Actions.AddMember:
-                        Formatter();
-                        AddMembers();
-                        Formatter();
+                        Funs(AddMembers);
                         break;
                     case (int)Actions.SearchMember:
-                        Formatter();
-                        SearchMembers();
-                        Formatter();
+                        Funs(SearchMembers);
                         break;
                     case (int)Actions.UpdateMember:
-                        Formatter();
-                        UpdateMember();
-                        Formatter();
+                        Funs(UpdateMember);
                         break;
                     case (int)Actions.ShowAllMember:
-                        Formatter();
-                        DisplayMembers();
-                        Formatter();
+                        Funs(DisplayMembers);
                         break;
                     case (int)Actions.RemoveMember:
-                        Formatter();
-                        RemoveMember();
-                        Formatter();
+                        Funs(RemoveMember);
                         break;
                     case (int)Actions.Exit:
                         Console.WriteLine("Exit");
@@ -62,9 +52,9 @@ namespace OrganizationMembership
                 Console.WriteLine(process);
             }
         }
-        static int GetUserInput()
+        static string GetUserInput()
         {
-            return Convert.ToInt16(Console.ReadLine());
+            return Console.ReadLine();
         }
         static void Formatter()
         {
@@ -72,67 +62,44 @@ namespace OrganizationMembership
         }
         static void AddMembers()
         {
-           Console.Write("First name: ");
-           string firstName = Console.ReadLine();
-           Console.Write("Last name: ");
-           string lastName = Console.ReadLine();
+            Console.Write("First name: ");
+            string firstName = Console.ReadLine();
+            Console.Write("Last name: ");
+            string lastName = Console.ReadLine();
+            Console.Write("ID: ");
+            string ID = Console.ReadLine();
 
-           Members member = new Members { FName = firstName, LName = lastName };
-           MembershipBusiness.AddMember(member);
-           Console.WriteLine("Member Added");
+            Members member = new Members { FName = firstName, LName = lastName };
+            MembershipBusiness.AddMember(firstName, lastName, ID);
+            Console.WriteLine("Member Added");
 
         }
         static void SearchMembers()
         {
             AskID();
-            int id = GetUserInput();
+            string id = GetUserInput();
 
-            if (MembershipBusiness.SearchMember(id) != null)
-            {
-                Console.WriteLine("User found");
-                Console.WriteLine(MembershipBusiness.SearchMember(id));
-            }
-            else
-            {
-                Console.WriteLine("Member not found");
-            }
+            string result = membershipBusiness.SearchMember(id);
+            Console.WriteLine(result);
         }
         static void UpdateMember()
         {
             AskID();
-            int id = GetUserInput();
+            string UpdateID = GetUserInput();
+            Console.Write("First name: ");
+            string UpdatedFName = Console.ReadLine();
+            Console.Write("Last name: ");
+            string UpdatedLName = Console.ReadLine();
+            MembershipBusiness.UpdateMember(UpdateID, UpdatedFName, UpdatedLName);
 
-            if (MembershipBusiness.SearchMember(id) != null)
-            {
-                Console.WriteLine(MembershipBusiness.SearchMember(id));
-
-                Console.Write("First name: ");
-                string firstName = Console.ReadLine();
-                Console.Write("Last name: ");
-                string lastName = Console.ReadLine();
-
-                bool isUpdated = MembershipBusiness.UpdateMember(id, firstName, lastName);
-                if(isUpdated)
-                {
-                    Console.WriteLine("Member updated!");
-                }
-                else
-                {
-                    Console.WriteLine("Update unsuccessful");
-                }
-            }
-            else
-            {
-                Console.WriteLine("Member not found");
-            }
         }
         static void RemoveMember()
         {
             AskID();
-            int id = GetUserInput();
-            if (MembershipBusiness.SearchMember(id) != null)
+            string id = GetUserInput();
+            if (MembershipBusiness.RemoveMember(id) != null)
             {
-                Console.WriteLine(MembershipBusiness.SearchMember(id));
+                Console.WriteLine(MembershipBusiness.RemoveMember(id));
                 MembershipBusiness.RemoveMember(id);
                 Console.WriteLine("Member removed");
             }
@@ -144,14 +111,14 @@ namespace OrganizationMembership
         }
         static void DisplayMembers()
         {
-           List<Members> members = MembershipBusiness.ShowAllMember();
+           List<Members> members = MembershipBusiness.ShowAllMembers();
             if (members.Count > 0)
             {
                 Console.WriteLine("Name\t\t\tID");
                 Formatter();
                 foreach (Members member in members)
                 {
-                    Console.WriteLine($"{member.FName} {member.LName}\t\t{member.GetMemberID()}");
+                    Console.WriteLine($"{member.FName} {member.LName}\t\t{member.ID}");
                 }
             }
             else
@@ -162,7 +129,13 @@ namespace OrganizationMembership
         static void AskID()
         {
             Console.Write("Enter ID:");
-           
+
+        }
+        static void Funs(Action action)
+        {
+            Formatter();
+            action();
+            Formatter();
         }
         
     }
