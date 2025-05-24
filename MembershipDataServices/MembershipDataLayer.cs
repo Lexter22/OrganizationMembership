@@ -11,7 +11,8 @@ namespace MembershipDataServices
         {
             // MembershipDataLayerInt = new TextFileDataService();
             //   MembershipDataLayerInt = new InMemoryDataService();
-            MembershipDataLayerInt = new JsonFileDataService();
+            //MembershipDataLayerInt = new JsonFileDataService();
+           MembershipDataLayerInt = new DBDataService();
         }
 
         public void AddMember(Members member)
