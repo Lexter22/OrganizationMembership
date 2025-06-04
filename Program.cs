@@ -3,6 +3,7 @@ using MembershipCommon;
 using Membership_BusinessDataLogic;
 using System.Threading.Channels;
 using System.Diagnostics;
+using Microsoft.IdentityModel.Tokens;
 namespace OrganizationMembership
 {
     internal class Program
@@ -69,9 +70,15 @@ namespace OrganizationMembership
             Console.Write("ID: ");
             string ID = Console.ReadLine();
 
-            Members member = new Members { FName = firstName, LName = lastName };
-            MembershipBusiness.AddMember(firstName, lastName, ID);
-            Console.WriteLine("Member Added");
+            if(!firstName.IsNullOrEmpty() && !lastName.IsNullOrEmpty() && !ID.IsNullOrEmpty())
+            {
+                Members member = new Members { FName = firstName, LName = lastName };
+                MembershipBusiness.AddMember(firstName, lastName, ID);
+                Console.WriteLine("Member Added");
+            }
+            else {
+                Console.WriteLine("Please fill up the fields!");
+            }
 
         }
         static void SearchMembers()
@@ -79,25 +86,47 @@ namespace OrganizationMembership
             AskID();
             string id = GetUserInput();
 
-            string result = membershipBusiness.SearchMember(id);
-            Console.WriteLine(result);
+            if (!id.IsNullOrEmpty())
+            {
+                string result = membershipBusiness.SearchMember(id);
+                Console.WriteLine(result);
+            }
+            else
+            {
+                Console.WriteLine("Enter an ID!");
+            }
         }
         static void UpdateMember()
         {
             AskID();
             string UpdateID = GetUserInput();
-            Console.Write("First name: ");
-            string UpdatedFName = Console.ReadLine();
-            Console.Write("Last name: ");
-            string UpdatedLName = Console.ReadLine();
-            MembershipBusiness.UpdateMember(UpdateID, UpdatedFName, UpdatedLName);
+
+            if(!UpdateID.IsNullOrEmpty())
+            {
+                Console.Write("First name: ");
+                string UpdatedFName = Console.ReadLine();
+                Console.Write("Last name: ");
+                string UpdatedLName = Console.ReadLine();
+                if (!UpdatedFName.IsNullOrEmpty() && !UpdatedLName.IsNullOrEmpty())
+                {
+                    MembershipBusiness.UpdateMember(UpdateID, UpdatedFName, UpdatedLName);
+                }
+                else
+                {
+                    Console.WriteLine("Fill up the fields!");
+                }
+            }
+            else
+            {
+                Console.WriteLine("Enter an ID!");
+            }
 
         }
         static void RemoveMember()
         {
             AskID();
             string id = GetUserInput();
-            if (MembershipBusiness.RemoveMember(id) != null)
+            if (!id.IsNullOrEmpty())
             {
                 Console.WriteLine(MembershipBusiness.RemoveMember(id));
                 MembershipBusiness.RemoveMember(id);
@@ -129,7 +158,6 @@ namespace OrganizationMembership
         static void AskID()
         {
             Console.Write("Enter ID:");
-
         }
         static void Funs(Action action)
         {
