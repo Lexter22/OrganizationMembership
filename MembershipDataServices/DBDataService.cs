@@ -71,11 +71,12 @@ namespace MembershipDataServices
         public void UpdateMember(Members member)
         {
             sqlConnection.Open();
-            string updateStatement = $"UPDATE Members SET last_name = @last_name " +
+            string updateStatement = $"UPDATE Members SET first_name = @first_name ,last_name = @last_name " +
                 $"WHERE ID = @ID";
 
              SqlCommand updateCommand = new SqlCommand(updateStatement, sqlConnection);
              
+            updateCommand.Parameters.AddWithValue("@first_name", member.FName);
             updateCommand.Parameters.AddWithValue("@last_name", member.LName);
             updateCommand.Parameters.AddWithValue("@ID", member.ID);
             updateCommand.ExecuteNonQuery();
