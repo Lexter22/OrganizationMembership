@@ -24,12 +24,7 @@ namespace MembershipDataServices
             var members = new List<Members>();
             while(reader.Read())
             {
-                //Members membersSerial = new Members();
-                //membersSerial.FName = reader["first_name"].ToString();
-                //membersSerial.LName = reader["last_name"].ToString();
-                //membersSerial.ID = reader["ID"].ToString();
-
-                //members.Add(membersSerial);
+                
                 Members member = new Members
                 {
                     FName = reader["first_name"].ToString(),

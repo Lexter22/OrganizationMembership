@@ -11,7 +11,7 @@ namespace MembershipDataServices
     class InMemoryDataService : IOrgMembership
     {
         public static List<Members> members = new List<Members>();
-       // private static int memberID = 1;
+        // private static int memberID = 1;
         public InMemoryDataService()
         {
             TextFileDataService textFileDataService = new TextFileDataService();
@@ -19,7 +19,7 @@ namespace MembershipDataServices
         }
         private void CreateDummyAccounts()
         {
-            members.Add(new Members {FName = "Dexter", LName = "Morgan", ID = "A1111" });
+            members.Add(new Members { FName = "Dexter", LName = "Morgan", ID = "A1111" });
         }
         public void AddMember(Members member)
         {
@@ -56,12 +56,23 @@ namespace MembershipDataServices
                 {
                     m.FName = member.FName;
                     m.LName = member.LName;
-                    
+
 
                 }
             }
-            
+
         }
-        
+        public Members SearchMember(string id)
+        {
+            foreach (Members m in members)
+            {
+                if (m.ID == id)
+                {
+                    return m;
+                }
+            }
+            return null; 
+
+        }
     }
 }

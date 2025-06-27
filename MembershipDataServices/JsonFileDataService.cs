@@ -72,13 +72,25 @@ namespace MembershipDataServices
 
         public void AddMember(Members member)
         {
-           members.Add(member);
-           WriteJsonDataToFile();
+            members.Add(member);
+            WriteJsonDataToFile();
         }
 
         List<Members> IOrgMembership.GetMembers()
         {
             return GetMembers();
+        }
+        public Members SearchMember(string id)
+        {
+            var index = FindMemberIndex(id);
+            if (index != -1)
+            {
+                return members[index];
+            }
+            else
+            {
+                return null;
+            }
         }
     }
 }

@@ -12,14 +12,14 @@ namespace MembershipDataServices
         string filePath = "members.txt";
         List<Members> Member = new List<Members>();
         public TextFileDataService()
-        { 
+        {
             GetDataFromFile();
         }
 
         public void AddMember(Members member)
         {
-           Member.Add(member);
-           WriteDataToFile();
+            Member.Add(member);
+            WriteDataToFile();
         }
         private void WriteDataToFile()
         {
@@ -59,7 +59,7 @@ namespace MembershipDataServices
                     FName = parts[0],
                     LName = parts[1],
                     ID = parts[2],
-                 
+
                 });
             }
         }
@@ -95,6 +95,17 @@ namespace MembershipDataServices
             return Member;
         }
 
-      
+        public Members SearchMember(string id)
+        {
+            foreach (var member in Member)
+            {
+                if (member.ID == id)
+                {
+                    return member;
+                }
+            }
+            return null;
+
+        }
     }
 }

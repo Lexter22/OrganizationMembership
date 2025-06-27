@@ -6,11 +6,12 @@ using System.Threading.Tasks;
 using MembershipCommon;
 namespace MembershipDataServices
 {
-    interface IOrgMembership
+    public interface IOrgMembership
     {
         public void AddMember(Members member);
         public void UpdateMember(Members member);
         public void RemoveMember(Members member);
+        Members SearchMember(string id);
         public List<Members> GetMembers();
     }
 }

@@ -29,6 +29,10 @@ namespace MembershipDataServices
         {
             MembershipDataLayerInt.RemoveMember(member);
         }
+        public Members SearchMember(string id)
+        {
+          return MembershipDataLayerInt.SearchMember(id);
+        }
 
         public void UpdateMember(Members member)
         {

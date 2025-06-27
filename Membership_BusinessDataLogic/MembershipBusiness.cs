@@ -1,11 +1,14 @@
 ﻿using MembershipCommon;
 using MembershipDataServices;
 using System.ComponentModel.DataAnnotations;
+using System.Threading.Channels;
 
 namespace Membership_BusinessDataLogic
 {
     public class MembershipBusiness
     {
+      
+        
         static MembershipDataLayer dataLayer = new MembershipDataLayer();
       
         public static void AddMember(string firstname,string lastname,string id)
